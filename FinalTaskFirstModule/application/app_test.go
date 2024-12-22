@@ -8,7 +8,6 @@ import (
 	"net/http"
 	"net/http/httptest"
 	"testing"
-
 	"github.com/BelozubEgor/Final-task/FinalTaskFirstModule/application"
 )
 
