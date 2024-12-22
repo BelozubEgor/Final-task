@@ -28,9 +28,7 @@ go run ./cmd/main.go
 cURL команда с ответом сервиса 200:
 
 ```
- curl --location '127.0.0.1:8080/api/v1/calculate' --header 'Content-Type: application/json' --data '{
-  "expression": "2+2*2"
-}'
+ curl --location "127.0.0.1:8080/api/v1/calculate" --header "Content-Type: application/json" --data \"{ \"expression\": \"2+2*2\" }"
 ```
 Ответ:
 
@@ -40,9 +38,7 @@ cURL команда с ответом сервиса 200:
 
 cURL команда с ответом сервиса 400:
 ```
-curl --location '127.0.0.1:8080/api/v1/calculate' --header 'Content-Type: application/json' --data '{
-  "expression": "2+2*2
-}'
+curl --location "127.0.0.1:8080/api/v1/calculate" --header "Content-Type: application/json" --data "{ \"expression\": \"2+2*2 }"
 ```
 Ответ:
 ```
@@ -51,9 +47,7 @@ curl --location '127.0.0.1:8080/api/v1/calculate' --header 'Content-Type: applic
 
 cURL команда с ответом сервиса 405:
 ```
-curl --request GET \ --url '127.0.0.1:8080/api/v1/calculate' --header 'Content-Type: application/json' --data '{
-  "expression": "2+2*2"
-}'
+curl --request GET \ --url "127.0.0.1:8080/api/v1/calculate" --header "Content-Type: application/json" --data "{ \"expression\": \"2+2*2\" }"
 ```
 Ответ:
 ```
@@ -62,9 +56,7 @@ curl --request GET \ --url '127.0.0.1:8080/api/v1/calculate' --header 'Content-T
 
 cURL команда с ответом сервиса 422:
 ```
-curl --location '127.0.0.1:8080/api/v1/calculate' --header 'Content-Type: application/json' --data '{
-  "expression": "2+2*2)"
-}'
+curl --location "127.0.0.1:8080/api/v1/calculate" --header "Content-Type: application/json" --data "{ \"expression\": \"2+2*2)\" }"
 ```
 Ответ:
 ```
@@ -73,9 +65,7 @@ curl --location '127.0.0.1:8080/api/v1/calculate' --header 'Content-Type: applic
 
 cURL команда с ответом сервиса 422 с делением на 0:
 ```
-curl --location '127.0.0.1:8080/api/v1/calculate' --header 'Content-Type: application/json' --data '{
-  "expression": "(2+2*2)/0"
-}'
+curl --location "127.0.0.1:8080/api/v1/calculate" --header "Content-Type: application/json" --data "{ \"expression\": \"(2+2*2)/0\" }"
 ```
 Ответ:
 ```
