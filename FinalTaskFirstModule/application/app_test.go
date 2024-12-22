@@ -8,37 +8,38 @@ import (
 	"net/http"
 	"net/http/httptest"
 	"testing"
-	"github.com/BelozubEgor/Final-task/FinalTaskFirstModule/application"
+
+	app "github.com/BelozubEgor/Final-task/application"
 )
 
 func TestCalc(t *testing.T) {
 	testCasesSuccess := []struct {
 		name           string
 		method         string
-		requestBody    application.Request
+		requestBody    app.Request
 		expectedCode   int
-		expectedResult application.GoodResponse
+		expectedResult app.GoodResponse
 	}{
 		{
 			name:           "simple",
 			method:         "POST",
-			requestBody:    application.Request{Expression: "1+1"},
+			requestBody:    app.Request{Expression: "1+1"},
 			expectedCode:   200,
-			expectedResult: application.GoodResponse{Result: "2.00000000"},
+			expectedResult: app.GoodResponse{Result: "2.00000000"},
 		},
 		{
 			name:           "priority",
 			method:         "POST",
-			requestBody:    application.Request{Expression: "2+2*2"},
+			requestBody:    app.Request{Expression: "2+2*2"},
 			expectedCode:   200,
-			expectedResult: application.GoodResponse{Result: "6.00000000"},
+			expectedResult: app.GoodResponse{Result: "6.00000000"},
 		},
 		{
 			name:           "priority2",
 			method:         "POST",
-			requestBody:    application.Request{Expression: "(2+2)*2"},
+			requestBody:    app.Request{Expression: "(2+2)*2"},
 			expectedCode:   200,
-			expectedResult: application.GoodResponse{Result: "8.00000000"},
+			expectedResult: app.GoodResponse{Result: "8.00000000"},
 		},
 	}
 
@@ -50,16 +51,16 @@ func TestCalc(t *testing.T) {
 				fmt.Println("Error marshaling JSON:", err)
 				return
 			}
-			req := httptest.NewRequest(http.MethodPost, "/api/calculate", bytes.NewBuffer(jsonData))
+			req := httptest.NewRequest(http.MethodPost, "/api/v1/calculate", bytes.NewBuffer(jsonData))
 			w := httptest.NewRecorder()
-			application.CalcHandler(w, req)
+			app.CalcHandler(w, req)
 			res := w.Result()
 			defer res.Body.Close()
 			body, err := io.ReadAll(res.Body)
 			if err != nil {
 				t.Fatalf("Error reading response body: %v", err)
 			}
-			var response application.GoodResponse
+			var response app.GoodResponse
 			if err1 := json.Unmarshal(body, &response); err1 != nil {
 				t.Fatalf("Error unmarshaling JSON: %v", err)
 			}
@@ -78,30 +79,30 @@ func TestCalc(t *testing.T) {
 	testCasesFail := []struct {
 		name           string
 		method         string
-		requestBody    application.Request
+		requestBody    app.Request
 		expectedCode   int
-		expectedResult application.BadResponse
+		expectedResult app.BadResponse
 	}{
 		{
 			name:           "manyOperations",
 			method:         "POST",
-			requestBody:    application.Request{Expression: "1+1+"},
+			requestBody:    app.Request{Expression: "1+1+"},
 			expectedCode:   422,
-			expectedResult: application.BadResponse{Error: "Expression is not valid"},
+			expectedResult: app.BadResponse{Error: "Expression is not valid"},
 		},
 		{
 			name:           "extraBracket",
 			method:         "POST",
-			requestBody:    application.Request{Expression: "3*3("},
+			requestBody:    app.Request{Expression: "3*3("},
 			expectedCode:   422,
-			expectedResult: application.BadResponse{Error: "Expression is not valid"},
+			expectedResult: app.BadResponse{Error: "Expression is not valid"},
 		},
 		{
 			name:           "not numbs",
 			method:         "POST",
-			requestBody:    application.Request{Expression: "qwerty"},
+			requestBody:    app.Request{Expression: "qwerty"},
 			expectedCode:   422,
-			expectedResult: application.BadResponse{Error: "Expression is not valid"},
+			expectedResult: app.BadResponse{Error: "Expression is not valid"},
 		},
 	}
 
@@ -113,16 +114,16 @@ func TestCalc(t *testing.T) {
 				fmt.Println("Error marshaling JSON:", err)
 				return
 			}
-			req := httptest.NewRequest(http.MethodPost, "/api/calculate", bytes.NewBuffer(jsonData))
+			req := httptest.NewRequest(http.MethodPost, "/api/v1/calculate", bytes.NewBuffer(jsonData))
 			w := httptest.NewRecorder()
-			application.CalcHandler(w, req)
+			app.CalcHandler(w, req)
 			res := w.Result()
 			defer res.Body.Close()
 			body, err := io.ReadAll(res.Body)
 			if err != nil {
 				t.Fatalf("Error reading response body: %v", err)
 			}
-			var response application.BadResponse
+			var response app.BadResponse
 			if err1 := json.Unmarshal(body, &response); err1 != nil {
 				t.Fatalf("Error unmarshaling JSON: %v", err)
 			}
@@ -141,14 +142,14 @@ func TestCalc(t *testing.T) {
 
 // тест для ошибки 405
 func TestCalcHandlerWrongMethodCase(t *testing.T) {
-	jsonData, err := json.Marshal(application.Request{Expression: "1+1 * 2"})
+	jsonData, err := json.Marshal(app.Request{Expression: "1+1 * 2"})
 	if err != nil {
 		fmt.Println("Error marshaling JSON:", err)
 		return
 	}
-	req := httptest.NewRequest(http.MethodGet, "/api/calculate", bytes.NewBuffer(jsonData))
+	req := httptest.NewRequest(http.MethodGet, "/api/v1/calculate", bytes.NewBuffer(jsonData))
 	w := httptest.NewRecorder()
-	application.CalcHandler(w, req)
+	app.CalcHandler(w, req)
 	res := w.Result()
 	defer res.Body.Close()
 
@@ -159,9 +160,9 @@ func TestCalcHandlerWrongMethodCase(t *testing.T) {
 
 // тест для ошибки 400
 func TestCalcHandlerBadRequest(t *testing.T) {
-	req := httptest.NewRequest(http.MethodPost, "/api/calculate", bytes.NewBuffer([]byte("qwerty")))
+	req := httptest.NewRequest(http.MethodPost, "/api/v1/calculate", bytes.NewBuffer([]byte("qwerty")))
 	w := httptest.NewRecorder()
-	application.CalcHandler(w, req)
+	app.CalcHandler(w, req)
 	res := w.Result()
 	defer res.Body.Close()
 

@@ -8,7 +8,7 @@ import (
 	"os"
 	"strconv"
 
-	"github.com/BelozubEgor/Final-task/FinalTaskFirstModule/pkg/calc"
+	calc "github.com/BelozubEgor/Final-task/pkg/calc"
 )
 
 type Config struct {
