@@ -4,11 +4,12 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
-	"github.com/BelozubEgor/Final-task/FinalTaskFirstModule/application/app"
 	"io"
 	"net/http"
 	"net/http/httptest"
 	"testing"
+
+	"github.com/BelozubEgor/Final-task/FinalTaskFirstModule/application"
 )
 
 func TestCalc(t *testing.T) {

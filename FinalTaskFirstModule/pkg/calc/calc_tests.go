@@ -1,9 +1,9 @@
-package calc_test
+package calc_tests
 
 import (
 	"testing"
 
-	"github.com/BelozubEgor/FinalTaskFirstModule/pkg/calc"
+	"github.com/BelozubEgor/Final-task/FinalTaskFirstModule/pkg/calc"
 )
 
 func TestCalc(t *testing.T) {
