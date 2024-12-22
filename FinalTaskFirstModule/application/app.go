@@ -3,11 +3,12 @@ package app
 import (
 	"encoding/json"
 	"errors"
-	"github.com/BelozubEgor/Final-task/FinalTaskFirstModule/pkg/calc"
 	"io"
 	"net/http"
 	"os"
 	"strconv"
+
+	"github.com/BelozubEgor/Final-task/FinalTaskFirstModule/pkg/calc"
 )
 
 type Config struct {
@@ -94,9 +95,9 @@ func CalcHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	result, err := calculation.Calc(request.Expression)
+	result, err := calc.Calc(request.Expression)
 	if err != nil {
-		if errors.Is(err, calculation.ErrInvalidExpression) {
+		if errors.Is(err, calc.ErrInvalidExpression) {
 			//422
 			w.WriteHeader(http.StatusUnprocessableEntity)
 			err3 := json.NewEncoder(w).Encode(BadResponse{Error: "Expression is not valid"})
